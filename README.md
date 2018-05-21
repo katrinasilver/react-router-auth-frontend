@@ -1,4 +1,4 @@
-# react--router-auth-frontend
+# react-router-auth-frontend
 
 ## To install
 
