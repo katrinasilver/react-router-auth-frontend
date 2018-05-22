@@ -3,7 +3,7 @@ import { MoonLoader } from 'react-spinners'
 
 import BlogPosts from './BlogPosts'
 
-import { request } from '../helpers/request'
+import { request } from '../helpers'
 
 class BlogPostsFrontPage extends Component {
   constructor(props){
@@ -16,6 +16,10 @@ class BlogPostsFrontPage extends Component {
   }
 
   componentDidMount(){
+    this.getData()
+  }
+
+  getData = () => {
     this.setState({loading:true})
     request('/blog_posts?limit=1&orderByColumn=id&orderDirection=desc')
     .then((blog_posts) => {
@@ -23,6 +27,9 @@ class BlogPostsFrontPage extends Component {
         blog_posts:blog_posts.data.blog_posts,
         loading: false
       })
+    })
+    .catch(error => {
+      this.setState({loading:false})
     })
   }
 
@@ -34,7 +41,7 @@ class BlogPostsFrontPage extends Component {
         </h3>
 
         {
-          this.state.loading ? <MoonLoader /> : <BlogPosts blog_posts={this.state.blog_posts}/>
+          this.state.loading ? <MoonLoader /> : <BlogPosts blog_posts={this.state.blog_posts} refreshData={this.getData}/>
         }
 
         <nav className="blog-pagination">

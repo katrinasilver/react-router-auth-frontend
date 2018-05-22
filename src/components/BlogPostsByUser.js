@@ -3,7 +3,7 @@ import { MoonLoader } from 'react-spinners'
 
 import BlogPosts from './BlogPosts'
 
-import { request } from '../helpers/request'
+import { request } from '../helpers'
 
 class BlogPostsByUser extends Component{
   constructor(props){
@@ -14,24 +14,31 @@ class BlogPostsByUser extends Component{
       loading: false
     }
   }
+
   componentDidMount(){
     const { username } = this.props.match.params
+    this.getData(username)
+  }
+
+  componentDidUpdate(prevProps, prevState){
+    const { username: oldUsername } = prevProps.match.params
+    const { username: newUsername } = this.props.match.params
+    if(oldUsername !== newUsername){
+      this.getData(newUsername)
+    }
+  }
+
+  getData = (username) => {
     this.setState({loading: true})
     request(`/blog_posts?username=${username}&orderDirection=desc`)
     .then(({data: {blog_posts}}) => {
       this.setState({blog_posts, loading:false})
     })
+    .catch(error => {
+      this.setState({loading:false})
+    })
   }
-  componentDidUpdate(prevProps, prevState){
-    if(prevProps.match.params.month !== this.props.match.params.month || prevProps.match.params.year !== this.props.match.params.year){
-      const { username } = this.props.match.params
-      this.setState({loading: true})
-      request(`/blog_posts?username=${username}&orderDirection=desc`)
-      .then(({data: {blog_posts}}) => {
-        this.setState({blog_posts, loading:false})
-      })
-    }
-  }
+
   render(){
     return (
       <div className="col-md-8 blog-main">
@@ -40,7 +47,9 @@ class BlogPostsByUser extends Component{
         </h3>
 
         {
-          this.state.loading ? <MoonLoader /> : <BlogPosts blog_posts={this.state.blog_posts}/>
+          this.state.loading ?
+          <MoonLoader /> :
+          <BlogPosts blog_posts={this.state.blog_posts} refreshData={() => this.getData(this.props.match.params.username)}/>
         }
 
         <nav className="blog-pagination">

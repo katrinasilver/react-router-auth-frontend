@@ -1,22 +1,46 @@
 import React from 'react'
 import ReactMarkdown from 'react-markdown'
 import { Link } from 'react-router-dom'
+import { request, withAuthentication } from '../helpers'
 
 import moment from 'moment'
 
-const BlogPost = (props) => {
+const BlogPost = ({ blog_post, authState, refreshData }) => {
+  const { id, users_id, title, created_at, username, labels, body } = blog_post;
+
+  const remove = (id) => {
+    request(`/blog_posts/${id}`, 'delete')
+    .then(response => {
+      refreshData()
+    })
+  }
+
   return (
     <div className="blog-post">
-      <h2 className="blog-post-title">{props.blog_post.title}</h2>
-      <p className="blog-post-meta">{moment(props.blog_post.created_at).format('MMMM DD, YYYY')} by <Link to={`/users/${props.blog_post.username}`}>{props.blog_post.username}</Link>
+      <div>
+        <h1 style={{display:'inline'}} className="blog-post-title">{title}</h1>
+        {
+          authState && authState.id === users_id ?
+          <span className="float-right" >
+            <span className="btn btn-md btn-secondary" style={{marginRight:'5px'}}>Edit</span>
+            <span
+              onClick={() => remove(id)}
+              className="btn btn-md btn-danger">
+              Delete
+            </span>
+          </span> : null
+        }
+      </div>
+      <p className="blog-post-meta">{moment(created_at).format('MMMM DD, YYYY')} by <Link to={`/users/${username}`}>{username}</Link>
        </p>
        <p className="blog-post-labels">
-         { props.blog_post.labels.map((label,id) => <Link key={id} to={`/labels/${label}`}>{label} </Link>)}
+         { labels.map((label,id) => <Link key={id} to={`/labels/${label}`}>{label} </Link>)}
        </p>
        <hr />
-      <ReactMarkdown source={props.blog_post.body} />
+      <ReactMarkdown source={body} />
     </div>
   )
 }
 
-export default BlogPost
+
+export default withAuthentication(BlogPost)

@@ -1,7 +1,8 @@
 import axios from 'axios'
+import AuthenticationService from './AuthenticationService'
 
 
-export function request(path, method = 'get', body = null) {
+export default function request(path, method = 'get', body = null) {
   let bearerToken = ''
   const token = localStorage.getItem('token')
 
@@ -17,5 +18,11 @@ export function request(path, method = 'get', body = null) {
       'Authorization': bearerToken
     },
     data: body
+  })
+  .catch(function(error){
+    if(error.response.status === 401){
+      AuthenticationService.setAuthState(null)
+    }
+    return Promise.reject()
   })
 }

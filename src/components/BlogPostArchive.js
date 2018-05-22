@@ -1,10 +1,9 @@
 import React, { Component } from 'react'
 import { MoonLoader } from 'react-spinners';
 
-
 import BlogPosts from './BlogPosts'
 
-import { request } from '../helpers/request'
+import { request } from '../helpers'
 
 class BlogPostArchive extends Component{
   constructor(props){
@@ -17,23 +16,27 @@ class BlogPostArchive extends Component{
 
   componentDidMount(){
     const { month, year } = this.props.match.params
-    this.setState({loading: true})
-    request(`/blog_posts?month=${month}&year=${year}&orderDirection=desc`)
-    .then(({data: {blog_posts}}) => {
-      this.setState({blog_posts, loading:false})
-    })
+    this.getData(month, year)
   }
   componentDidUpdate(prevProps, prevState){
-    if(prevProps.match.params.month !== this.props.match.params.month || prevProps.match.params.year !== this.props.match.params.year){
-      const { month, year } = this.props.match.params
-      this.setState({loading: true})
-      request(`/blog_posts?month=${month}&year=${year}&orderDirection=desc`)
-      .then(({data: {blog_posts}}) => {
-        this.setState({blog_posts, loading:false})
-      })
+    const { month: oldMonth, year: oldYear } = prevProps.match.params
+    const { month: newMonth, year: newYear } = this.props.match.params
+
+    if(oldMonth !== newMonth || oldYear !== newYear){
+      this.getData(newMonth, newYear)
     }
   }
 
+  getData = (month, year) => {
+    this.setState({loading: true})
+    request(`/blog_posts?month=${month}&year=${year}&orderDirection=desc`)
+    .then(({data: {blog_posts}}) => {
+      this.setState({blog_posts, loading: false})
+    })
+    .catch(error => {
+      this.setState({loading:false})
+    })
+  }
   getMonthName(monthNumber){
     switch(monthNumber){
       case '1': return 'January'
@@ -60,7 +63,7 @@ class BlogPostArchive extends Component{
         </h3>
 
         {
-          this.state.loading ? <MoonLoader /> : <BlogPosts blog_posts={this.state.blog_posts}/>
+          this.state.loading ? <MoonLoader /> : <BlogPosts blog_posts={this.state.blog_posts} refreshData={()=> this.getData(month,year)}/>
         }
 
         <nav className="blog-pagination">

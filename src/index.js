@@ -1,11 +1,10 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import AuthenticationService from './helpers/AuthenticationService'
 
 import App from './components/App';
 import registerServiceWorker from './registerServiceWorker';
 
-import { request } from './helpers/request'
+import { request, AuthenticationService } from './helpers/index'
 
 import 'bootstrap/dist/css/bootstrap.css';
 import './index.css'

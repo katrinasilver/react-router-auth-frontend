@@ -120,6 +120,13 @@
   color:white;
 }
 
+.blog-post-label {
+  color: #999;
+  background-color: gray;
+  border-radius: 4px;
+  color:white;
+}
+
 /*
  * Footer
  */

@@ -1,7 +1,6 @@
 import React, {Component} from 'react'
 import { Switch, Route } from 'react-router-dom'
 
-import Header from './Header'
 import Labels from './Labels'
 import BlogPostsFrontPage from './BlogPostsFrontPage'
 import BlogPostArchive from './BlogPostArchive'
@@ -17,7 +16,6 @@ class Home extends Component {
     return (
       <div>
         <div className="container">
-          <Header />
           <Labels />
         </div>
 

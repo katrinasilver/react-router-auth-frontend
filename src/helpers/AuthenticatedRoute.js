@@ -1,35 +1,14 @@
-import React, { Component } from 'react'
+import React from 'react'
 import { Route, Redirect } from 'react-router-dom'
-import AuthenticationService from './AuthenticationService'
+import withAuthentication from './withAuthentication'
 
-
-
-class AuthenticatedRoute extends Component {
-  constructor(props){
-    super(props)
-    this.state = {
-      authState: AuthenticationService.getAuthState(),
-      pending: true
-    }
+const AuthenticatedRoute = (props) => {
+  if(props.authStatePending && !props.authState){
+    return props.loading || <div>Loading...</div>
   }
-  handleAuthState = (authState) => {
-    this.setState({ authState, pending: false })
-  }
-  componentWillMount(){
-    AuthenticationService.registerEvent(this.handleAuthState)
-  }
-  componentWillUnmount(){
-    AuthenticationService.deRegisterEvent(this.handleAuthState)
-  }
-  render(){
-    if(this.state.pending && !this.state.authState){
-      return this.props.loading || <div>Loading...</div>
-    }
-    else {
-      return this.state.authState ? <Route {...this.props} /> : <Redirect to='/' />
-    }
+  else {
+    return props.authState ? <Route {...props} /> : <Redirect to='/' />
   }
 }
 
-
-export default (props) => <AuthenticatedRoute {...props} />
+export default withAuthentication(AuthenticatedRoute)

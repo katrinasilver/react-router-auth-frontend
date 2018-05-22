@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
 
-import { request } from '../helpers/request'
+import { request } from '../helpers'
 
 class Labels extends Component {
   constructor(props){
@@ -20,7 +20,12 @@ class Labels extends Component {
     return (
       <div className="nav-scroller py-1 mb-2">
         <nav className="nav d-flex justify-content-between">
-          { this.state.labels.map((ele,id) => <Link key={id} className="p-2 text-muted" to={`/labels/${ele.label_text}`}>{ele.label_text}</Link> )}
+          {
+            this.state.labels.map((ele,id) =>
+            <Link key={id} className="p-2 text-muted" to={`/labels/${ele.label_text}`}>
+              {ele.label_text}
+            </Link> )
+          }
         </nav>
       </div>
     )

@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
 
-import { request } from '../helpers/request'
+import { request } from '../helpers'
 
 class Archives extends Component {
   constructor(props){
@@ -11,7 +11,12 @@ class Archives extends Component {
       allMonthsWithBlogs: []
     }
   }
+
   componentDidMount(){
+    this.getData()
+  }
+
+  getData = () => {
     request('/blog_posts/getAllMonthsWithBlogs')
     .then((allMonthsWithBlogs) => {
       this.setState({
@@ -19,6 +24,7 @@ class Archives extends Component {
       })
     })
   }
+
   render(){
     return (
       <div className="p-3">

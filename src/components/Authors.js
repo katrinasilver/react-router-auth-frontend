@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
 
-import { request } from '../helpers/request'
+import { request } from '../helpers'
 
 class Authors extends Component{
   constructor(props){
@@ -13,12 +13,16 @@ class Authors extends Component{
   }
 
   componentDidMount(){
+    this.getData()
+  }
+
+  getData = () => {
     request('/users/allUsersWithBlogPosts')
     .then(({ data: { users } }) => {
-
       this.setState({ users })
     })
   }
+
   render(){
     return (
       <div className="p-3">

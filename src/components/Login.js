@@ -1,8 +1,7 @@
 import React, { Component } from 'react'
 // import { Link } from 'react-router-dom'
 
-import AuthenticationService from '../helpers/AuthenticationService'
-import { request } from '../helpers/request'
+import { request, AuthenticationService } from '../helpers'
 
 import '../styles/login.css'
 
@@ -19,13 +18,14 @@ class Login extends Component {
     const { inputEmail, inputPassword } = event.target
     request('/auth/token','post', { username: inputEmail.value, password: inputPassword.value })
     .then(response => {
-      this.setState({showErrorMessage: false})
+      this.setState({ showErrorMessage: false })
       localStorage.setItem('token', response.data.token)
       return request('/auth/token')
     })
     .then(response => {
+      console.log(response)
       AuthenticationService.setAuthState(response.data)
-      this.props.history.push('/protected')
+      this.props.history.push('/')
     })
     .catch(error => {
       console.log(error)
