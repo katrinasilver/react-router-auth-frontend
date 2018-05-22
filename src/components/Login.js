@@ -16,19 +16,19 @@ class Login extends Component {
   handleSignIn = event => {
     event.preventDefault()
     const { inputEmail, inputPassword } = event.target
-    request('/auth/token','post', { username: inputEmail.value, password: inputPassword.value })
+    request('/auth/token','post', {
+      username: inputEmail.value,
+      password: inputPassword.value })
     .then(response => {
       this.setState({ showErrorMessage: false })
       localStorage.setItem('token', response.data.token)
       return request('/auth/token')
     })
     .then(response => {
-      console.log(response)
       AuthenticationService.setAuthState(response.data)
       this.props.history.push('/')
     })
     .catch(error => {
-      console.log(error)
       this.setState({showErrorMessage: true})
     })
   }
