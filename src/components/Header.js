@@ -30,7 +30,7 @@ class Header extends Component {
           </div>
           <div className="col-4 d-flex justify-content-end align-items-center">
             {
-              this.props.authState ?
+              AuthenticationService.getAuthState() ?
               <Link
                 className="btn btn-sm btn-outline-secondary"
                 style={{marginRight: '5px'}}

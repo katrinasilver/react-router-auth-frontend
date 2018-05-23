@@ -21,7 +21,9 @@ class AuthenticationWrapper extends Component{
 
   componentWillMount(){
     const authState = AuthenticationService.getAuthState()
-    this.setState({ authState, authStatePending: authState ? false : true })
+    const authStatePending = authState ? false : true
+
+    this.setState({ authState, authStatePending })
 
     AuthenticationService.registerEvent(this.handleAuthState)
   }
@@ -33,7 +35,10 @@ class AuthenticationWrapper extends Component{
   render(){
     const { Component, ...props} = this.props
     return (
-      <Component {...props} authState={this.state.authState} authStatePending={this.state.authStatePending}/>
+      <Component {...props}
+        authState={this.state.authState}
+        authStatePending={this.state.authStatePending}
+      />
     )
   }
 
@@ -51,6 +56,7 @@ class AuthService{
     if(!AuthService.instance){
       this.authState = null
       this.registeredCallbacks = []
+
       AuthService.instance = this
       return AuthService.instance
     }
@@ -92,26 +98,22 @@ export const AuthenticatedRoute = withAuthentication(AuthRoute)
 /// request ////////////////////////////////////////////////////////
 
 export const request = (path, method = 'get', body = null) => {
-  let bearerToken = ''
-  const token = localStorage.getItem('token')
 
-  if(token){
-    bearerToken = `Bearer ${token}`
-  }
+  const token = localStorage.getItem('token')
 
   return axios(`${process.env.REACT_APP_BACKEND}${path}`, {
     method: method,
     headers: {
       'Content-Type': 'application/json',
       'Accept': 'application/json',
-      'Authorization': bearerToken
+      'Authorization': token ? `Bearer ${token}` : ''
     },
     data: body
   })
-  .catch(function(error){
+  .catch(error => {
     if(error.response.status === 401){
       AuthenticationService.setAuthState(null)
     }
-    return Promise.reject()
+    return Promise.reject(error)
   })
 }
