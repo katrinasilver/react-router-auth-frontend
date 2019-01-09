@@ -26,7 +26,7 @@ class Header extends Component {
             }
           </div>
           <div className="col-4 text-center">
-            <Link to="/" className="blog-header-logo text-dark">g82 @ Large</Link>
+            <Link to="/" className="blog-header-logo text-dark">g105 @ Large</Link>
           </div>
           <div className="col-4 d-flex justify-content-end align-items-center">
             {
