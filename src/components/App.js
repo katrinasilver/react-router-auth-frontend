@@ -21,9 +21,13 @@ class App extends Component {
     }
   }
 
+
+  // used when the component loads, when you login and logout
   setAuthentication = claim => {
     this.setState({
-      authentication : {
+      authentication: {
+
+        // checks if you are logged in or the state of authentication
         pending: false,
         user: claim
       }
@@ -32,7 +36,8 @@ class App extends Component {
 
   componentDidMount(){
     request('/auth/token')
-    .then(response => this.setAuthentication(response.data))
+      .then(response => this.setAuthentication(response.data))
+      // set username to null if the authentication token is not valid
     .catch(err => this.setAuthentication(null))
   }
 
@@ -45,7 +50,7 @@ class App extends Component {
           </div>
           <Switch>
             <Route path='/login' render={(props) => <Login {...props} setAuthentication={this.setAuthentication} />} />
-            <AuthenticatedRoute exact path='/create' component={CreateBlogPost} authentication={this.state.authentication}/>
+            <AuthenticatedRoute path='/create' component={CreateBlogPost} authentication={this.state.authentication}/>
             <Route path='/' render={(props) => <Home {...props} user={this.state.authentication.user} />} />
           </Switch>
         </div>

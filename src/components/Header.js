@@ -19,10 +19,10 @@ class Header extends Component {
           <div className="col-4 pt-1">
             <Link className="btn btn-sm btn-outline-secondary" to="/">Sign up</Link>
             {
-              this.props.user ?
+              this.props.user &&
               <span style={{marginLeft: '5px'}}>
                 Welcome, {this.props.user.username}
-              </span> : null
+              </span>
             }
           </div>
           <div className="col-4 text-center">
@@ -30,13 +30,13 @@ class Header extends Component {
           </div>
           <div className="col-4 d-flex justify-content-end align-items-center">
             {
-              this.props.user ?
+              this.props.user &&
               <Link
                 className="btn btn-sm btn-outline-secondary"
                 style={{marginRight: '5px'}}
                 to="/create">
                 Create Blog Post
-              </Link> : null
+              </Link>
             }
             <span className="btn btn-sm btn-outline-secondary" onClick={()=>this.SignInSignOutButton()}>
               {this.props.user ? 'Sign Out' : 'Sign In'}
@@ -48,4 +48,5 @@ class Header extends Component {
   }
 }
 
+// use withRouter if the component is NOT a child of a route
 export default withRouter(Header)

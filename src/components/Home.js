@@ -23,10 +23,10 @@ class Home extends Component{
     <main role="main" className="container">
       <div className="row">
         <Switch>
-          <Route exact path={match.url} component={(props) => <BlogPostsFrontPage {...props} user={user} />} />
-          <Route path={`${match.url}archive/:month/:year`} component={(props) => <BlogPostArchive {...props} user={user} /> } /> 
-          <Route path={`${match.url}users/:username`} component={ (props) => <BlogPostsByUser {...props} user={user} /> } /> 
-          <Route path={`${match.url}labels/:label`} component={ (props) => <BlogPostsByLabel {...props} user={user} /> } />
+          <Route exact path={match.url} render={(props) => <BlogPostsFrontPage {...props} user={user} />} />
+          <Route path={`${match.url}archive/:month/:year`} render={(props) => <BlogPostArchive {...props} user={user} /> } />
+          <Route path={`${match.url}users/:username`} render={ (props) => <BlogPostsByUser {...props} user={user} /> } />
+          <Route path={`${match.url}labels/:label`} render={ (props) => <BlogPostsByLabel {...props} user={user} /> } />
         </Switch>
 
         <SideBar />
@@ -39,6 +39,6 @@ class Home extends Component{
 
   }
 }
-  
+
 
 export default Home
