@@ -30,7 +30,7 @@ class BlogPostsByUser extends Component{
 
   getData = (username) => {
     this.setState({loading: true})
-    
+
     request(`/blog_posts?username=${username}&orderDirection=desc`)
     .then(({data: {blog_posts}}) => {
       this.setState({blog_posts, loading:false})
@@ -50,7 +50,7 @@ class BlogPostsByUser extends Component{
         {
           this.state.loading ?
           <MoonLoader /> :
-          <BlogPosts blog_posts={this.state.blog_posts} refreshData={() => this.getData(this.props.match.params.username)}/>
+          <BlogPosts blog_posts={this.state.blog_posts} user={this.props.user} refreshData={() => this.getData(this.props.match.params.username)}/>
         }
 
         <nav className="blog-pagination">

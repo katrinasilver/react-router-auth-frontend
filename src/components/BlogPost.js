@@ -2,7 +2,6 @@ import React from 'react'
 import ReactMarkdown from 'react-markdown'
 import moment from 'moment'
 import { Link } from 'react-router-dom'
-import { connect } from 'react-redux'
 
 import request from '../utils/request'
 
@@ -44,8 +43,4 @@ const BlogPost = ({ blog_post, user, refreshData }) => {
   )
 }
 
-const mapStateToProps = state => ({
-  user: state.authentication.user
-})
-
-export default connect(mapStateToProps)(BlogPost)
+export default BlogPost

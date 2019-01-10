@@ -1,11 +1,6 @@
 import React, { Component } from 'react'
 import { Link, withRouter } from 'react-router-dom'
 
-import { connect } from 'react-redux'
-import { bindActionCreators } from 'redux'
-
-import { setAuthentication } from '../actions/authentication'
-
 class Header extends Component {
   SignInSignOutButton = () => {
     if(this.props.user){ // log out
@@ -16,7 +11,7 @@ class Header extends Component {
       this.props.history.push('/login')
     }
   }
-  
+
   render(){
     return (
       <header className="blog-header py-3">
@@ -53,13 +48,4 @@ class Header extends Component {
   }
 }
 
-const mapStateToProps = state => ({
-  user: state.authentication.user
-})
-
-const mapDispatchToProps = dispatch => 
-  bindActionCreators({
-    setAuthentication
-  }, dispatch)
-
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Header))
+export default withRouter(Header)

@@ -21,7 +21,7 @@ class BlogPostsFrontPage extends Component {
 
   getData = () => {
     this.setState({loading:true})
-    
+
     request('/blog_posts?limit=1&orderByColumn=id&orderDirection=desc')
     .then((blog_posts) => {
       this.setState({
@@ -42,7 +42,7 @@ class BlogPostsFrontPage extends Component {
         </h3>
 
         {
-          this.state.loading ? <MoonLoader /> : <BlogPosts blog_posts={this.state.blog_posts} refreshData={this.getData}/>
+          this.state.loading ? <MoonLoader /> : <BlogPosts blog_posts={this.state.blog_posts} user={this.props.user} refreshData={this.getData}/>
         }
 
         <nav className="blog-pagination">

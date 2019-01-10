@@ -1,7 +1,5 @@
 import React, { Component } from 'react';
 import { BrowserRouter, Route, Switch } from 'react-router-dom'
-import { bindActionCreators } from 'redux'
-import { connect } from 'react-redux'
 
 import Login from './Login'
 import Home from './Home'
@@ -9,14 +7,33 @@ import Header from './Header'
 import CreateBlogPost from './CreateBlogPost'
 import AuthenticatedRoute from '../higherOrderComponents/AuthenticatedRoute'
 
-import { setAuthentication } from '../actions/authentication'
 import request from '../utils/request';
 
 class App extends Component {
+  constructor(props){
+    super(props)
+
+    this.state = {
+      authentication: {
+        pending: true,
+        user: null
+      }
+    }
+  }
+
+  setAuthentication = claim => {
+    this.setState({
+      authentication : {
+        pending: false,
+        user: claim
+      }
+    })
+  }
+
   componentDidMount(){
     request('/auth/token')
-    .then(response => this.props.setAuthentication(response.data))
-    .catch(err => this.props.setAuthentication(null))
+    .then(response => this.setAuthentication(response.data))
+    .catch(err => this.setAuthentication(null))
   }
 
   render() {
@@ -24,12 +41,12 @@ class App extends Component {
       <BrowserRouter>
         <div>
           <div className="container">
-            <Header />
+            <Header setAuthentication={this.setAuthentication} user={this.state.authentication.user}/>
           </div>
           <Switch>
-            <Route path='/login' component={Login} />
-            <AuthenticatedRoute exact path='/create' component={CreateBlogPost} />
-            <Route path='/' component={Home} />
+            <Route path='/login' render={(props) => <Login {...props} setAuthentication={this.setAuthentication} />} />
+            <AuthenticatedRoute exact path='/create' component={CreateBlogPost} authentication={this.state.authentication}/>
+            <Route path='/' render={(props) => <Home {...props} user={this.state.authentication.user} />} />
           </Switch>
         </div>
       </BrowserRouter>
@@ -37,9 +54,4 @@ class App extends Component {
   }
 }
 
-const mapDispatchToProps = dispatch =>
-  bindActionCreators({
-    setAuthentication
-  }, dispatch)
-
-export default connect(null, mapDispatchToProps)(App)
+export default App

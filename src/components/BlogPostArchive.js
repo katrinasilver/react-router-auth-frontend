@@ -67,7 +67,7 @@ class BlogPostArchive extends Component{
         </h3>
 
         {
-          this.state.loading ? <MoonLoader /> : <BlogPosts blog_posts={this.state.blog_posts} refreshData={()=> this.getData(month,year)}/>
+          this.state.loading ? <MoonLoader /> : <BlogPosts blog_posts={this.state.blog_posts} user={this.props.user} refreshData={()=> this.getData(month,year)}/>
         }
 
         <nav className="blog-pagination">

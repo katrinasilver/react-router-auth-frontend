@@ -11,8 +11,11 @@ import Footer from './Footer'
 
 import '../styles/home.css'
 
-const Home = props =>  
-  <div>
+class Home extends Component{
+  render(){
+    const { user, match } = this.props
+    return (
+      <div>
     <div className="container">
       <Labels />
     </div>
@@ -20,10 +23,10 @@ const Home = props =>
     <main role="main" className="container">
       <div className="row">
         <Switch>
-          <Route exact path={props.match.url} component={BlogPostsFrontPage} />
-          <Route path={`${props.match.url}archive/:month/:year`} component={ BlogPostArchive } />
-          <Route path={`${props.match.url}users/:username`} component={ BlogPostsByUser } />
-          <Route path={`${props.match.url}labels/:label`} component={ BlogPostsByLabel } />
+          <Route exact path={match.url} component={(props) => <BlogPostsFrontPage {...props} user={user} />} />
+          <Route path={`${match.url}archive/:month/:year`} component={(props) => <BlogPostArchive {...props} user={user} /> } /> 
+          <Route path={`${match.url}users/:username`} component={ (props) => <BlogPostsByUser {...props} user={user} /> } /> 
+          <Route path={`${match.url}labels/:label`} component={ (props) => <BlogPostsByLabel {...props} user={user} /> } />
         </Switch>
 
         <SideBar />
@@ -32,5 +35,10 @@ const Home = props =>
 
     <Footer />
   </div>
+    )
+
+  }
+}
+  
 
 export default Home

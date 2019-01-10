@@ -1,8 +1,4 @@
 import React, { Component } from 'react'
-import { connect } from 'react-redux'
-import { bindActionCreators } from 'redux'
-
-import { setAuthentication } from '../actions/authentication'
 
 import request from '../utils/request'
 
@@ -26,7 +22,7 @@ class Login extends Component {
       password: inputPassword.value })
     .then(response => {
       this.setState({ showErrorMessage: false })
-      
+
       localStorage.setItem('token', response.data.token)
       return request('/auth/token')
     })
@@ -64,9 +60,4 @@ class Login extends Component {
   }
 }
 
-const mapDispatchToProps = dispatch => 
-  bindActionCreators({
-    setAuthentication
-  }, dispatch)
-
-export default connect(null, mapDispatchToProps)(Login)
+export default Login

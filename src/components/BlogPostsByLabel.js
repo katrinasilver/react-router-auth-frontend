@@ -30,7 +30,7 @@ class BlogPostsByLabel extends Component{
 
   getData = (label) => {
     this.setState({loading: true})
-    
+
     request(`/blog_posts?label=${label}&orderDirection=desc`)
     .then(({data: {blog_posts}}) => {
       this.setState({blog_posts, loading:false})
@@ -51,6 +51,7 @@ class BlogPostsByLabel extends Component{
           <MoonLoader /> :
           <BlogPosts
             blog_posts={this.state.blog_posts}
+            user={this.props.user}
             refreshData={()=>this.getData(this.props.match.params.label)}/>
         }
         <nav className="blog-pagination">
