@@ -3,11 +3,12 @@ import { MoonLoader } from 'react-spinners';
 
 import BlogPosts from './BlogPosts'
 
-import { request } from '../helpers'
+import request from '../utils/request'
 
 class BlogPostArchive extends Component{
   constructor(props){
     super(props)
+
     this.state = {
       blog_posts: [],
       loading: false
@@ -18,6 +19,7 @@ class BlogPostArchive extends Component{
     const { month, year } = this.props.match.params
     this.getData(month, year)
   }
+
   componentDidUpdate(prevProps, prevState){
     const { month: oldMonth, year: oldYear } = prevProps.match.params
     const { month: newMonth, year: newYear } = this.props.match.params
@@ -37,6 +39,7 @@ class BlogPostArchive extends Component{
       this.setState({loading:false})
     })
   }
+
   getMonthName(monthNumber){
     switch(monthNumber){
       case '1': return 'January'
@@ -54,6 +57,7 @@ class BlogPostArchive extends Component{
       default: return ''
     }
   }
+  
   render(){
     const { month, year } = this.props.match.params
     return (

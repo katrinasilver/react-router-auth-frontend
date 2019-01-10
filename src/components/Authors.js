@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
 
-import { request } from '../helpers'
+import request from '../utils/request'
 
 class Authors extends Component{
   constructor(props){
@@ -18,8 +18,8 @@ class Authors extends Component{
 
   getData = () => {
     request('/users/allUsersWithBlogPosts')
-    .then(({ data: { users } }) => {
-      this.setState({ users })
+    .then((response) => {
+      this.setState({ users: response.data.users })
     })
   }
 

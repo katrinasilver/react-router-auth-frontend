@@ -1,7 +1,10 @@
 import React, { Component } from 'react'
-// import { Link } from 'react-router-dom'
+import { connect } from 'react-redux'
+import { bindActionCreators } from 'redux'
 
-import { request, AuthenticationService } from '../helpers'
+import { setAuthentication } from '../actions/authentication'
+
+import request from '../utils/request'
 
 import '../styles/login.css'
 
@@ -15,17 +18,20 @@ class Login extends Component {
 
   handleSignIn = event => {
     event.preventDefault()
+    
     const { inputEmail, inputPassword } = event.target
+
     request('/auth/token','post', {
       username: inputEmail.value,
       password: inputPassword.value })
     .then(response => {
       this.setState({ showErrorMessage: false })
+      
       localStorage.setItem('token', response.data.token)
       return request('/auth/token')
     })
     .then(response => {
-      AuthenticationService.setAuthState(response.data)
+      this.props.setAuthentication(response.data)
       this.props.history.push('/')
     })
     .catch(error => {
@@ -58,4 +64,9 @@ class Login extends Component {
   }
 }
 
-export default Login
+const mapDispatchToProps = dispatch => 
+  bindActionCreators({
+    setAuthentication
+  }, dispatch)
+
+export default connect(null, mapDispatchToProps)(Login)

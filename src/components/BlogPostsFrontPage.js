@@ -3,7 +3,7 @@ import { MoonLoader } from 'react-spinners'
 
 import BlogPosts from './BlogPosts'
 
-import { request } from '../helpers'
+import request from '../utils/request'
 
 class BlogPostsFrontPage extends Component {
   constructor(props){
@@ -21,6 +21,7 @@ class BlogPostsFrontPage extends Component {
 
   getData = () => {
     this.setState({loading:true})
+    
     request('/blog_posts?limit=1&orderByColumn=id&orderDirection=desc')
     .then((blog_posts) => {
       this.setState({

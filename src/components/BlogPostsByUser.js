@@ -3,7 +3,7 @@ import { MoonLoader } from 'react-spinners'
 
 import BlogPosts from './BlogPosts'
 
-import { request } from '../helpers'
+import request from '../utils/request'
 
 class BlogPostsByUser extends Component{
   constructor(props){
@@ -30,6 +30,7 @@ class BlogPostsByUser extends Component{
 
   getData = (username) => {
     this.setState({loading: true})
+    
     request(`/blog_posts?username=${username}&orderDirection=desc`)
     .then(({data: {blog_posts}}) => {
       this.setState({blog_posts, loading:false})

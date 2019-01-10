@@ -11,31 +11,26 @@ import Footer from './Footer'
 
 import '../styles/home.css'
 
-class Home extends Component {
-  render() {
-    return (
-      <div>
-        <div className="container">
-          <Labels />
-        </div>
+const Home = props =>  
+  <div>
+    <div className="container">
+      <Labels />
+    </div>
 
-        <main role="main" className="container">
-          <div className="row">
-            <Switch>
-              <Route exact path={this.props.match.url} component={BlogPostsFrontPage} />
-              <Route path={`${this.props.match.url}archive/:month/:year`} component={ BlogPostArchive } />
-              <Route path={`${this.props.match.url}users/:username`} component={ BlogPostsByUser } />
-              <Route path={`${this.props.match.url}labels/:label`} component={ BlogPostsByLabel } />
-            </Switch>
+    <main role="main" className="container">
+      <div className="row">
+        <Switch>
+          <Route exact path={props.match.url} component={BlogPostsFrontPage} />
+          <Route path={`${props.match.url}archive/:month/:year`} component={ BlogPostArchive } />
+          <Route path={`${props.match.url}users/:username`} component={ BlogPostsByUser } />
+          <Route path={`${props.match.url}labels/:label`} component={ BlogPostsByLabel } />
+        </Switch>
 
-            <SideBar />
-          </div>
-        </main>
-
-        <Footer />
+        <SideBar />
       </div>
-    )
-  }
-}
+    </main>
+
+    <Footer />
+  </div>
 
 export default Home

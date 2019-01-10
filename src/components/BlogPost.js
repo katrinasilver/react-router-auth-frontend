@@ -1,11 +1,13 @@
 import React from 'react'
 import ReactMarkdown from 'react-markdown'
-import { Link } from 'react-router-dom'
-import { request, withAuthentication } from '../helpers'
-
 import moment from 'moment'
+import { Link } from 'react-router-dom'
+import { connect } from 'react-redux'
 
-const BlogPost = ({ blog_post, authState, refreshData }) => {
+import request from '../utils/request'
+
+
+const BlogPost = ({ blog_post, user, refreshData }) => {
   const { id, users_id, title, created_at, username, labels, body } = blog_post;
 
   const remove = (id) => {
@@ -20,7 +22,7 @@ const BlogPost = ({ blog_post, authState, refreshData }) => {
       <div>
         <h1 style={{display:'inline'}} className="blog-post-title">{title}</h1>
         {
-          authState && authState.id === users_id ?
+          user && user.id === users_id ?
           <span className="float-right" >
             <span className="btn btn-md btn-secondary" style={{marginRight:'5px'}}>Edit</span>
             <span
@@ -42,5 +44,8 @@ const BlogPost = ({ blog_post, authState, refreshData }) => {
   )
 }
 
+const mapStateToProps = state => ({
+  user: state.authentication.user
+})
 
-export default withAuthentication(BlogPost)
+export default connect(mapStateToProps)(BlogPost)

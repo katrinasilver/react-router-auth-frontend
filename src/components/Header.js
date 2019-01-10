@@ -1,17 +1,22 @@
 import React, { Component } from 'react'
 import { Link, withRouter } from 'react-router-dom'
-import { withAuthentication, AuthenticationService } from '../helpers'
+
+import { connect } from 'react-redux'
+import { bindActionCreators } from 'redux'
+
+import { setAuthentication } from '../actions/authentication'
 
 class Header extends Component {
   SignInSignOutButton = () => {
-    if(this.props.authState){ // log out
+    if(this.props.user){ // log out
       localStorage.removeItem('token')
-      AuthenticationService.setAuthState(null)
+      this.props.setAuthentication(null)
     }
     else {
       this.props.history.push('/login')
     }
   }
+  
   render(){
     return (
       <header className="blog-header py-3">
@@ -19,9 +24,9 @@ class Header extends Component {
           <div className="col-4 pt-1">
             <Link className="btn btn-sm btn-outline-secondary" to="/">Sign up</Link>
             {
-              this.props.authState ?
+              this.props.user ?
               <span style={{marginLeft: '5px'}}>
-                Welcome, {this.props.authState.username}
+                Welcome, {this.props.user.username}
               </span> : null
             }
           </div>
@@ -30,7 +35,7 @@ class Header extends Component {
           </div>
           <div className="col-4 d-flex justify-content-end align-items-center">
             {
-              AuthenticationService.getAuthState() ?
+              this.props.user ?
               <Link
                 className="btn btn-sm btn-outline-secondary"
                 style={{marginRight: '5px'}}
@@ -39,7 +44,7 @@ class Header extends Component {
               </Link> : null
             }
             <span className="btn btn-sm btn-outline-secondary" onClick={()=>this.SignInSignOutButton()}>
-              {this.props.authState ? 'Sign Out' : 'Sign In'}
+              {this.props.user ? 'Sign Out' : 'Sign In'}
             </span>
           </div>
         </div>
@@ -48,4 +53,13 @@ class Header extends Component {
   }
 }
 
-export default withRouter(withAuthentication(Header))
+const mapStateToProps = state => ({
+  user: state.authentication.user
+})
+
+const mapDispatchToProps = dispatch => 
+  bindActionCreators({
+    setAuthentication
+  }, dispatch)
+
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Header))

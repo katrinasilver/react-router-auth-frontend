@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
 
-import { request } from '../helpers'
+import request from '../utils/request'
 
 class Archives extends Component {
   constructor(props){
@@ -18,9 +18,9 @@ class Archives extends Component {
 
   getData = () => {
     request('/blog_posts/getAllMonthsWithBlogs')
-    .then((allMonthsWithBlogs) => {
+    .then((response) => {
       this.setState({
-        allMonthsWithBlogs: allMonthsWithBlogs.data.allMonthsWithBlogs.reverse()
+        allMonthsWithBlogs: response.data.allMonthsWithBlogs.reverse()
       })
     })
   }
@@ -31,9 +31,9 @@ class Archives extends Component {
         <h4 className="font-italic">Archives</h4>
         <ol className="list-unstyled mb-0">
           {
-            this.state.allMonthsWithBlogs.map((ele, id) => {
-              return <li key={id}><Link to={`/archive/${ele.num}/${ele.year}`}>{ele.month} {ele.year}</Link></li>
-            })
+            this.state.allMonthsWithBlogs.map((ele, id) =>
+              <li key={id}><Link to={`/archive/${ele.num}/${ele.year}`}>{ele.month} {ele.year}</Link></li>
+            )
           }
         </ol>
       </div>

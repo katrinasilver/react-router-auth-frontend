@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
-import { request } from '../helpers'
+
+import request from '../utils/request'
 import { withRouter } from 'react-router-dom'
 
 class CreateBlogPost extends Component {
@@ -29,6 +30,7 @@ class CreateBlogPost extends Component {
 
   handleSubmit = (event) => {
     event.preventDefault()
+    
     request('/blog_posts','post', {
       title: event.target.title.value,
       body: event.target.body.value,
@@ -38,6 +40,7 @@ class CreateBlogPost extends Component {
       this.props.history.push('/')
     })
   }
+
   render(){
     return (
       <div className="container">

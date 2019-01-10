@@ -1,23 +1,18 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { Provider } from 'react-redux'
 
 import App from './components/App';
 import registerServiceWorker from './registerServiceWorker';
 
-import { request, AuthenticationService } from './helpers'
+import store from './store'
 
 import 'bootstrap/dist/css/bootstrap.css';
 import './index.css'
 
-request('/auth/token')
-.then((response)=>{
-  AuthenticationService.setAuthState(response.data)
-})
+ReactDOM.render(
+<Provider store={store}>
+  <App />
+</Provider>, document.getElementById('root'));
 
-window.AuthenticationService = AuthenticationService
-
-
-
-
-ReactDOM.render(<App />, document.getElementById('root'));
 registerServiceWorker();
